@@ -1,0 +1,19 @@
+import fs from "node:fs";
+import path from "node:path";
+import morgan from "morgan";
+
+const __dirname = path.resolve(); // absolute path
+
+export function attachRouterWithLogger(app, routerPath, router, logFileName) {
+  const logStream = fs.createWriteStream(
+    path.resolve(__dirname, "./src/logger", logFileName),
+    { flags: "a" },
+  );
+
+  app.use(routerPath, morgan("combined", { stream: logStream }), router);
+
+  app.use(routerPath, morgan("dev"), router);
+}::1 - - [29/Aug/2026:16:50:36 +0000] "POST /api/v1/auth/signUp HTTP/1.1" 400 175 "-" "PostmanRuntime/7.56.1"
+::1 - - [29/Aug/2026:16:51:05 +0000] "POST /api/v1/auth/signUp HTTP/1.1" 400 206 "-" "PostmanRuntime/7.56.1"
+::1 - - [29/Aug/2026:16:52:11 +0000] "POST /api/v1/auth/signUp HTTP/1.1" 201 554 "-" "PostmanRuntime/7.56.1"
+::1 - - [29/Aug/2026:16:52:13 +0000] "POST /api/v1/auth/signUp HTTP/1.1" 409 33 "-" "PostmanRuntime/7.56.1"
